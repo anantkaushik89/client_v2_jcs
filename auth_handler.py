@@ -7,6 +7,7 @@ import os
 import posixpath
 import hashlib
 import six
+import urllib as ul
 from six.moves import urllib
 
 class HTTPRequest(object):
@@ -85,6 +86,6 @@ class V2Handler(object):
         canonical_string = self.string_to_sign(req)
         hmac_256.update(canonical_string.encode('utf-8'))
         b64 = base64.b64encode(hmac_256.digest()).decode('utf-8')
-        req.params['Signature'] = b64
+        req.params['Signature'] = ul.quote(b64)
         return req
 
