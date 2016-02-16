@@ -21,8 +21,12 @@ def requestify(request):
     parts = initial.split('/')
     protocol, host_port = parts[0][ : -1], parts[2]
     path = '/' + parts[3] + '/' + parts[4] + '/'
+    if (':' not in host_port):
+        host = host_port
+        port = 443
+    else:
+       [host, port] = host_port.split(':')
     auth_path = path
-    [host, port] = host_port.split(':')
     add_params(rest)
     headers['User-Agent'] = 'curl/7.35.0'
     headers['Content-Type'] = 'application/json'
@@ -45,6 +49,6 @@ def main():
     req = sys.argv[1]
     chngd_req = requestify(req)
     print chngd_req
-    #os.system(chngd_req)
+    os.system(chngd_req)
 
 main()
