@@ -49,6 +49,6 @@ def main():
     req = sys.argv[1]
     chngd_req = requestify(req)
     print chngd_req
-    os.system(chngd_req)
+#    os.system(chngd_req)
 
 main()

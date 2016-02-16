@@ -74,11 +74,10 @@ class V2Handler(object):
         return qs
 
     def string_to_sign(self, req):
-        ss = req.method + '\n' + req.host + '\n'
-        if (req.port is not None):
-            ss += req.path + '\n'
-        else:
-            ss += req.path + ":" + req.port + '\n'
+        ss = req.method + '\n' + req.host
+	if req.port != 443:
+        	ss += ":" + str(req.port)
+	ss += "\n" + req.path + '\n'
         self.add_params(req) 
         qs = self.sort_params(req.params)
         ss += qs
