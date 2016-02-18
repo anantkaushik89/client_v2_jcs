@@ -20,7 +20,7 @@ def requestify(request):
     [initial, rest] = request.split('?')
     parts = initial.split('/')
     protocol, host_port = parts[0][ : -1], parts[2]
-    path = '/' + parts[3] + '/' + parts[4] + '/'
+    path = '/'
     if (':' not in host_port):
         host = host_port
         port = 443
