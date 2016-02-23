@@ -47,7 +47,7 @@ class V2Handler(object):
         self.secret_key = os.environ.get('JCS_SECRET_KEY')
 
     def add_params(self, req):
-        req.params['AWSAccessKeyId'] = self.access_key
+        req.params['JCSAccessKeyId'] = self.access_key
         req.params['SignatureVersion'] = '2'
         req.params['SignatureMethod'] = 'HmacSHA256'
         req.params['Timestamp'] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
