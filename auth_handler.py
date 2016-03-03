@@ -7,6 +7,7 @@ import os
 import posixpath
 import hashlib
 import six
+import urllib as ul
 from six.moves import urllib
 
 class HTTPRequest(object):
@@ -46,7 +47,7 @@ class V2Handler(object):
         self.secret_key = os.environ.get('JCS_SECRET_KEY')
 
     def add_params(self, req):
-        req.params['AWSAccessKeyId'] = self.access_key
+        req.params['JCSAccessKeyId'] = self.access_key
         req.params['SignatureVersion'] = '2'
         req.params['SignatureMethod'] = 'HmacSHA256'
         req.params['Timestamp'] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
@@ -73,9 +74,11 @@ class V2Handler(object):
         return qs
 
     def string_to_sign(self, req):
-        ss = req.method + '\n' + req.host + ':' + req.port + '\n'
-        ss += req.path + '\n'
-        self.add_params(req)
+        ss = req.method + '\n' + req.host
+	if req.port != 443:
+        	ss += ":" + str(req.port)
+	ss += "\n" + req.path + '\n'
+        self.add_params(req) 
         qs = self.sort_params(req.params)
         ss += qs
         return ss
@@ -85,7 +88,6 @@ class V2Handler(object):
         canonical_string = self.string_to_sign(req)
         hmac_256.update(canonical_string.encode('utf-8'))
         b64 = base64.b64encode(hmac_256.digest()).decode('utf-8')
-        import urllib
-        req.params['Signature'] = urllib.quote(b64)
+        req.params['Signature'] = ul.quote(b64)
         return req
 
