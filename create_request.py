@@ -13,7 +13,13 @@ def add_params(string):
     length = len(string)
     parts = string.split('&')
     for p in parts:
-        (key, val) = p.split('=')
+        if len(p.split('=')) > 2:
+            vals = p.split('=')
+            key = vals[0]
+            val = '='
+            val = val.join(vals[1 : ])
+        else:
+            (key, val) = p.split('=')
         params[key] = val
 
 def requestify(request):
